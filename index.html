@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Monitoramento refinado do clima e alertas de tempestade para Franca - SP utilizando a API pública do RadarMeteorológico e dados oficiais do INMET.">
+  <meta name="theme-color" content="#F8FAFC">
+  <title>Franca · Clima & Alertas de Tempestade</title>
+  
+  <!-- Tipografia Anti-IA: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/webp" href="icon.webp">
+</head>
+<body>
+
+  <!-- Formas Orgânicas Sutis em Tons Pastéis ao Fundo -->
+  <div class="ambient-backdrop" aria-hidden="true">
+    <div class="ambient-shape shape-1"></div>
+    <div class="ambient-shape shape-2"></div>
+    <div class="ambient-shape shape-3"></div>
+  </div>
+
+  <div class="app-container">
+
+    <!-- Cabeçalho Principal -->
+    <header class="site-header stagger-in delay-1" role="banner">
+      <div class="brand-wrapper">
+        <img src="icon.webp" alt="Ícone de clima e previsão do tempo" class="brand-weather-icon" width="46" height="46">
+        <div class="location-titles">
+          <h1>
+            Franca <span class="state-pill">SP</span>
+          </h1>
+          <div class="location-meta">
+            <span>IBGE 3516200</span>
+            <span class="meta-dot"></span>
+            <span>20°32'S 47°24'O</span>
+            <span class="meta-dot"></span>
+            <span id="last-update-label">Sincronizando...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="refresh-btn" class="action-btn-primary" type="button" aria-label="Atualizar dados meteorológicos">
+          <span id="refresh-icon" aria-hidden="true">🔄</span>
+          <span>Atualizar</span>
+        </button>
+      </div>
+    </header>
+
+    <main role="main" style="display:flex; flex-direction:column; gap:1.75rem;">
+
+      <!-- SEÇÃO DE ALERTA DE TEMPESTADE (DESTAQUE MÁXIMO) -->
+      <section class="alert-section stagger-in delay-2" aria-labelledby="section-storm-alerts">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <h2 id="section-storm-alerts" class="section-label">
+            <span>⚡</span> Alertas Oficiais de Tempestade & Tempo Severo
+          </h2>
+          <!-- Abas para múltiplos alertas -->
+          <nav id="alerts-nav-tabs" class="alerts-tabs" aria-label="Alertas disponíveis"></nav>
+        </div>
+
+        <div id="storm-alert-container">
+          <!-- Carregado dinamicamente via app.js -->
+          <article class="alert-card level-1">
+            <header class="alert-header">
+              <div class="alert-title-group">
+                <span class="pulse-indicator"></span>
+                <div class="alert-heading">
+                  <h2>Verificando alertas meteorológicos em vigor para Franca...</h2>
+                  <p class="alert-subheading">Consultando avisos oficiais do INMET e RadarMeteorológico.</p>
+                </div>
+              </div>
+            </header>
+          </article>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DO TEMPO ATUAL (HERO CARD EM VIDRO CLARO) -->
+      <section class="stagger-in delay-3" aria-labelledby="section-current-weather">
+        <h2 id="section-current-weather" class="section-label" style="margin-bottom: 0.5rem;">
+          <span>🌡️</span> Agora em Franca
+        </h2>
+        <article class="current-weather-card" id="current-weather-content">
+          <div style="display:flex; align-items:center; justify-content:center; min-height:140px; color:var(--text-muted);">
+            Carregando temperatura e condições em tempo real...
+          </div>
+        </article>
+      </section>
+
+      <!-- PREVISÃO HORA A HORA (24H COM FOCO EM CHUVA) -->
+      <section class="forecast-section stagger-in delay-4" aria-labelledby="section-hourly">
+        <article class="card-container">
+          <div class="card-header-row">
+            <h2 id="section-hourly">Próximas 24 horas em Franca</h2>
+            <span class="header-hint">Deslize para ver</span>
+          </div>
+          <div class="hourly-timeline" id="hourly-timeline" tabindex="0" role="region" aria-label="Linha do tempo horária de temperatura e probabilidade de chuva">
+            <!-- Inserido dinamicamente via app.js -->
+          </div>
+        </article>
+      </section>
+
+      <!-- PREVISÃO PARA OS PRÓXIMOS 7 DIAS -->
+      <section class="forecast-section stagger-in delay-5" aria-labelledby="section-daily">
+        <article class="card-container">
+          <div class="card-header-row">
+            <h2 id="section-daily">Previsão para os Próximos 7 Dias</h2>
+            <span class="header-hint">Máx / Mín</span>
+          </div>
+          <div class="daily-list" id="daily-list">
+            <!-- Inserido dinamicamente via app.js -->
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <!-- Rodapé Editorial & Atribuição de Dados -->
+    <footer class="site-footer" role="contentinfo">
+      <div class="emergency-info">
+        <span class="emergency-tag">🚨 Telefones Úteis de Emergência:</span>
+        <span>Defesa Civil: <strong>199</strong></span>
+        <span>·</span>
+        <span>Corpo de Bombeiros: <strong>193</strong></span>
+        <span>·</span>
+        <span>SAMU: <strong>192</strong></span>
+      </div>
+
+      <div class="footer-credits">
+        <div class="attribution-links">
+          <span>Dados de Alertas: <strong>INMET</strong> via <a href="https://radarmeteorologico.com.br" target="_blank" rel="noopener">radarmeteorologico.com.br</a></span>
+          <span>·</span>
+          <span>Previsão Climática: <strong>Open-Meteo</strong></span>
+        </div>
+        <div>
+          <span>Franca - SP · Interface Clara & Minimalista</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

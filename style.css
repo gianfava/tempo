@@ -1,0 +1,1221 @@
+/* ==========================================================================
+   FRANCA-SP · CLIMA & ALERTAS DE TEMPESTADE
+   Estética Clara (Light Mode), Sofisticada, Editorial & Autêntica
+   Glassmorphism Tátil & Card Dinâmico Temático
+   ========================================================================== */
+
+:root {
+  /* Design Tokens - Tipografia Anti-IA */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Paleta Base - Claro Sofisticado */
+  --bg-page: #F8FAFC;
+  --bg-canvas: #F5F5F7;
+  
+  /* Superfícies de Vidro Claro (Frosted Glass) */
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.58);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.85);
+  --glass-border-subtle: 1px solid rgba(226, 232, 240, 0.65);
+
+  /* Sombras Difusas Frias (Ambient Shadows) */
+  --shadow-diffuse: 0 8px 30px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 14px 38px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 1px 3px rgba(15, 23, 42, 0.02);
+  --shadow-glass-button: inset 0 1px 1.5px rgba(255, 255, 255, 1), 0 4px 16px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+
+  /* Contraste & Tipografia */
+  --text-charcoal: #111827;       /* Preto carvão com máxima legibilidade */
+  --text-slate: #4B5563;          /* Cinza ardósia para textos de apoio */
+  --text-muted: #6B7280;          /* Cinza neutro suave */
+  --text-faint: #9CA3AF;          /* Metadados e rótulos pequenos */
+
+  /* Cores de Destaque Sóbrias */
+  --accent-action: #111827;       
+  --accent-blue: #0284C7;         
+  --accent-blue-soft: rgba(2, 132, 199, 0.08);
+
+  /* Alertas Meteorológicos INMET */
+  --alert-level1-tint: rgba(254, 243, 199, 0.45);
+  --alert-level1-border: #F59E0B;
+  --alert-level1-badge: #B45309;
+  --alert-level1-text: #78350F;
+
+  --alert-level2-tint: rgba(254, 215, 170, 0.45);
+  --alert-level2-border: #F97316;
+  --alert-level2-badge: #C2410C;
+  --alert-level2-text: #7C2D12;
+
+  --alert-level3-tint: rgba(254, 202, 202, 0.45);
+  --alert-level3-border: #EF4444;
+  --alert-level3-badge: #B91C1C;
+  --alert-level3-text: #7F1D1D;
+
+  --alert-safe-tint: rgba(240, 253, 244, 0.65);
+  --alert-safe-border: #22C55E;
+  --alert-safe-badge: #15803D;
+  --alert-safe-text: #14532D;
+
+  /* Formas & Raios */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Física de Mola (Spring Physics) */
+  --spring-timing: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-bounce: cubic-bezier(0.34, 1.45, 0.64, 1);
+  --spring-quick: cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  color: var(--text-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #F8FAFC 0%, #F5F5F7 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--text-charcoal);
+  text-decoration: none;
+  transition: color 0.2s var(--spring-timing);
+}
+
+a:hover {
+  color: var(--accent-blue);
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* ==========================================================================
+   Formas Orgânicas Sutis ao Fundo (Ambient Backdrop)
+   ========================================================================== */
+.ambient-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  opacity: 0.42;
+  will-change: transform;
+}
+
+.shape-1 {
+  width: 540px;
+  height: 540px;
+  top: -140px;
+  right: -90px;
+  background: radial-gradient(circle, rgba(224, 242, 254, 0.95) 0%, rgba(240, 249, 255, 0.15) 70%);
+  animation: floatAmbient 24s ease-in-out infinite alternate;
+}
+
+.shape-2 {
+  width: 460px;
+  height: 460px;
+  bottom: 8%;
+  left: -110px;
+  background: radial-gradient(circle, rgba(254, 243, 199, 0.55) 0%, rgba(254, 240, 138, 0.08) 70%);
+  animation: floatAmbient 19s ease-in-out infinite alternate-reverse;
+}
+
+.shape-3 {
+  width: 390px;
+  height: 390px;
+  top: 42%;
+  right: 12%;
+  background: radial-gradient(circle, rgba(241, 245, 249, 0.85) 0%, transparent 70%);
+}
+
+@keyframes floatAmbient {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -35px) scale(1.06); }
+  100% { transform: translate(-25px, 25px) scale(0.95); }
+}
+
+/* ==========================================================================
+   Layout Principal & Transições Escalonadas (Staggered Entry)
+   ========================================================================== */
+.app-container {
+  max-width: 920px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  padding-block: 2rem 3.5rem;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.85rem;
+}
+
+.stagger-in {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: springReveal 0.75s var(--spring-timing) forwards;
+}
+
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.12s; }
+.delay-3 { animation-delay: 0.20s; }
+.delay-4 { animation-delay: 0.28s; }
+.delay-5 { animation-delay: 0.36s; }
+
+@keyframes springReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Cabeçalho Principal
+   ========================================================================== */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand-weather-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  object-fit: cover;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.16), 0 1px 3px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  flex-shrink: 0;
+  transition: transform 0.3s var(--spring-bounce), box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.brand-weather-icon:hover {
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.22), 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.location-titles h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-charcoal);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.location-titles h1 .state-pill {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--text-charcoal);
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+.location-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.2rem;
+  flex-wrap: wrap;
+}
+
+.meta-dot {
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background-color: var(--text-faint);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   BOTÕES LIGHT GLASSMORPHISM COM FÍSICA DE MOLA & SENSAÇÃO TÁTIL
+   ========================================================================== */
+.action-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow-glass-button);
+  color: var(--text-charcoal);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.22s var(--spring-bounce),
+              box-shadow 0.22s ease,
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.action-btn-primary:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: #FFFFFF;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: inset 0 1px 2px #FFFFFF,
+              0 8px 24px rgba(15, 23, 42, 0.08),
+              0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.action-btn-primary:active {
+  transform: translateY(1px) scale(0.97);
+  background: rgba(248, 250, 252, 0.92);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.06),
+              0 2px 6px rgba(15, 23, 42, 0.03);
+}
+
+.action-btn-primary:focus-visible {
+  outline: 2px solid var(--text-charcoal);
+  outline-offset: 3px;
+}
+
+.spin-anim {
+  animation: spin 0.85s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   ALERTA DE TEMPESTADE (FOCO PRINCIPAL)
+   ========================================================================== */
+.alert-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.alerts-tabs {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+/* Abas de Alertas Táteis em Vidro */
+.tab-btn {
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.70);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: var(--text-slate);
+  box-shadow: inset 0 1px 1px #FFFFFF, 0 2px 8px rgba(15, 23, 42, 0.03);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.22s var(--spring-bounce),
+              background-color 0.2s ease,
+              color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-charcoal);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.tab-btn:active {
+  transform: translateY(0.5px) scale(0.97);
+}
+
+.tab-btn.active {
+  background: #FFFFFF;
+  color: var(--text-charcoal);
+  border-color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: inset 0 1px 2px #FFFFFF,
+              0 6px 18px rgba(15, 23, 42, 0.09),
+              0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+/* Card de Alerta em Vidro Fosco Claro */
+.alert-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 1.45rem 1.75rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-diffuse);
+  transition: transform 0.35s var(--spring-timing), box-shadow 0.35s var(--spring-timing);
+  border-left-width: 5px;
+  overflow: hidden;
+}
+
+.alert-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.alert-card.level-1 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, var(--alert-level1-tint) 100%);
+  border-left-color: var(--alert-level1-border);
+}
+
+.alert-card.level-2 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, var(--alert-level2-tint) 100%);
+  border-left-color: var(--alert-level2-border);
+}
+
+.alert-card.level-3 {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, var(--alert-level3-tint) 100%);
+  border-left-color: var(--alert-level3-border);
+}
+
+.alert-card.safe {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, var(--alert-safe-tint) 100%);
+  border-left-color: var(--alert-safe-border);
+}
+
+.alert-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.alert-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 260px;
+}
+
+.pulse-indicator {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.alert-card.level-1 .pulse-indicator { background-color: var(--alert-level1-border); }
+.alert-card.level-2 .pulse-indicator { background-color: var(--alert-level2-border); }
+.alert-card.level-3 .pulse-indicator { background-color: var(--alert-level3-border); }
+.alert-card.safe .pulse-indicator { background-color: var(--alert-safe-border); }
+
+.pulse-indicator::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.6;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.alert-heading h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.alert-subheading {
+  font-size: 0.82rem;
+  color: var(--text-slate);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.alert-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.badge-warning {
+  background-color: var(--alert-level1-badge);
+  color: #FFFFFF;
+}
+
+.badge-danger {
+  background-color: var(--alert-level2-badge);
+  color: #FFFFFF;
+}
+
+.badge-extreme {
+  background-color: var(--alert-level3-badge);
+  color: #FFFFFF;
+}
+
+.badge-time {
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text-charcoal);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.alert-details {
+  margin-top: 1.15rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.alert-period-badge {
+  font-size: 0.86rem;
+  color: var(--text-charcoal);
+  font-weight: 600;
+}
+
+.detail-block h3 {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-slate);
+  margin-bottom: 0.35rem;
+}
+
+.detail-block ul {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.detail-block li {
+  position: relative;
+  padding-left: 1.35rem;
+  font-size: 0.86rem;
+  color: var(--text-slate);
+  line-height: 1.5;
+}
+
+.detail-block li::before {
+  content: '⚡';
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.78rem;
+}
+
+.detail-block.instructions li::before {
+  content: '🛡️';
+}
+
+.alert-footer-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-charcoal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--spring-timing);
+}
+
+.alert-footer-link:hover {
+  color: var(--accent-blue);
+}
+
+/* ==========================================================================
+   CARD 'AGORA EM FRANCA' (TEMÁTICO, DINÂMICO & FLUIDO)
+   Adapta gradientes, iluminação ambiente e status conforme o clima
+   ========================================================================== */
+.current-weather-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 1.85rem 2.25rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-diffuse);
+  transition: transform 0.4s var(--spring-timing),
+              box-shadow 0.4s var(--spring-timing),
+              background 0.5s ease,
+              border-color 0.5s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.current-weather-card:hover {
+  transform: translateY(-2.5px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Halo Atmosférico Interno Dinâmico */
+.current-weather-card .weather-ambient-halo {
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: breathingAtmosphere 8s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+  transition: background 0.6s ease;
+}
+
+@keyframes breathingAtmosphere {
+  0% { transform: scale(0.95); opacity: 0.75; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* --- Variantes Temáticas Dinâmicas do Card --- */
+
+/* 1. Tema Tempestade (Thunderstorm) */
+.current-weather-card.weather-theme-storm {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(245, 243, 255, 0.80) 50%, rgba(254, 243, 199, 0.55) 100%);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 10px 32px rgba(245, 158, 11, 0.06), var(--shadow-diffuse);
+}
+.current-weather-card.weather-theme-storm .weather-ambient-halo {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.28) 0%, rgba(199, 210, 254, 0.12) 55%, transparent 75%);
+}
+
+/* 2. Tema Chuva / Pancadas (Rain) */
+.current-weather-card.weather-theme-rain {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 249, 255, 0.85) 50%, rgba(224, 242, 254, 0.60) 100%);
+  border-color: rgba(56, 189, 248, 0.40);
+  box-shadow: 0 10px 32px rgba(2, 132, 199, 0.05), var(--shadow-diffuse);
+}
+.current-weather-card.weather-theme-rain .weather-ambient-halo {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.26) 0%, rgba(224, 242, 254, 0.15) 60%, transparent 75%);
+}
+
+/* 3. Tema Nublado / Encoberto (Cloudy) */
+.current-weather-card.weather-theme-cloudy {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(241, 245, 249, 0.85) 60%, rgba(226, 232, 240, 0.55) 100%);
+  border-color: rgba(226, 232, 240, 0.95);
+}
+.current-weather-card.weather-theme-cloudy .weather-ambient-halo {
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.20) 0%, rgba(241, 245, 249, 0.1) 60%, transparent 75%);
+}
+
+/* 4. Tema Ensolarado / Céu Limpo (Sunny) */
+.current-weather-card.weather-theme-sunny {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(254, 252, 232, 0.85) 50%, rgba(254, 243, 199, 0.55) 100%);
+  border-color: rgba(253, 224, 71, 0.45);
+  box-shadow: 0 10px 32px rgba(245, 158, 11, 0.05), var(--shadow-diffuse);
+}
+.current-weather-card.weather-theme-sunny .weather-ambient-halo {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(254, 243, 199, 0.15) 60%, transparent 75%);
+}
+
+/* 5. Tema Noturno Serena (Night) */
+.current-weather-card.weather-theme-night {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(241, 245, 249, 0.80) 55%, rgba(224, 231, 255, 0.55) 100%);
+  border-color: rgba(199, 210, 254, 0.45);
+}
+.current-weather-card.weather-theme-night .weather-ambient-halo {
+  background: radial-gradient(circle, rgba(165, 180, 252, 0.25) 0%, rgba(224, 231, 255, 0.1) 60%, transparent 75%);
+}
+
+/* --- Linha de Status Superior do Card --- */
+.card-context-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.weather-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: inset 0 1px 1px #FFFFFF, 0 2px 6px rgba(15, 23, 42, 0.03);
+  color: var(--text-charcoal);
+}
+
+.rain-summary-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* --- Hero Principal (Temperatura & Ícone) --- */
+.hero-main-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.temp-and-condition {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.weather-hero-icon {
+  width: 86px;
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.4s var(--spring-bounce);
+  filter: drop-shadow(0 6px 12px rgba(15, 23, 42, 0.06));
+}
+
+.current-weather-card:hover .weather-hero-icon {
+  transform: scale(1.08) rotate(-2deg);
+}
+
+.weather-hero-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.temp-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-temp {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--text-charcoal);
+}
+
+.condition-title {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--text-charcoal);
+  margin-top: 0.45rem;
+}
+
+.min-max-badge {
+  font-size: 0.88rem;
+  color: var(--text-slate);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+/* --- Grid de Chips Táteis de Métricas --- */
+.weather-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+  position: relative;
+  z-index: 1;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 1px #FFFFFF, 0 2px 8px rgba(15, 23, 42, 0.02);
+  transition: transform 0.25s var(--spring-bounce),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+}
+
+.metric-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #FFFFFF;
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: inset 0 1px 1.5px #FFFFFF, 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.metric-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.015em;
+  margin-top: 0.2rem;
+}
+
+/* ==========================================================================
+   CARDS EM VIDRO FOSCO (CONTAINERS DE CONTEÚDO)
+   ========================================================================== */
+.card-container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.85rem;
+  box-shadow: var(--shadow-diffuse);
+  transition: transform 0.35s var(--spring-timing), box-shadow 0.35s var(--spring-timing);
+}
+
+.card-container:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.card-header-row h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.02em;
+}
+
+.header-hint {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+/* ==========================================================================
+   PREVISÃO HORA A HORA (TIMELINE INTERATIVA)
+   ========================================================================== */
+.hourly-timeline {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.85rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(203, 213, 225, 0.6) transparent;
+}
+
+.hourly-timeline::-webkit-scrollbar {
+  height: 5px;
+}
+
+.hourly-timeline::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.7);
+  border-radius: var(--radius-full);
+}
+
+.hourly-item {
+  flex: 0 0 74px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.85rem 0.45rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 1px #FFFFFF, 0 2px 6px rgba(15, 23, 42, 0.02);
+  transition: transform 0.28s var(--spring-bounce),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.25s ease;
+  text-align: center;
+  gap: 0.45rem;
+  user-select: none;
+}
+
+.hourly-item:hover {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: #FFFFFF;
+  transform: translateY(-3.5px) scale(1.04);
+  box-shadow: inset 0 1px 1.5px #FFFFFF, 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.hourly-item.storm-risk {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(254, 243, 199, 0.4) 100%);
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.hour-time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hour-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.hour-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hour-temp {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.01em;
+}
+
+.hour-rain-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+}
+
+.rain-bar-container {
+  width: 100%;
+  height: 3px;
+  background-color: rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 0.15rem;
+}
+
+.rain-bar-fill {
+  height: 100%;
+  background-color: var(--accent-blue);
+  border-radius: var(--radius-full);
+  transition: width 0.6s var(--spring-timing);
+}
+
+/* ==========================================================================
+   PREVISÃO PARA OS PRÓXIMOS 7 DIAS
+   ========================================================================== */
+.daily-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-item {
+  display: grid;
+  grid-template-columns: 110px 42px 1fr 65px 95px;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 0.65rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s var(--spring-timing), transform 0.2s var(--spring-timing);
+}
+
+.daily-item:last-child {
+  border-bottom: none;
+}
+
+.daily-item:hover {
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateX(3px);
+}
+
+.daily-day {
+  display: flex;
+  flex-direction: column;
+}
+
+.day-name {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+  letter-spacing: -0.01em;
+}
+
+.day-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.daily-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.daily-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.daily-desc {
+  font-size: 0.85rem;
+  color: var(--text-slate);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.daily-rain {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  text-align: right;
+}
+
+.daily-temps {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  font-family: var(--font-display);
+}
+
+.temp-max {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-charcoal);
+}
+
+.temp-min {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   RODAPÉ EDITORIAL
+   ========================================================================== */
+.site-footer {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(226, 232, 240, 0.7);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.emergency-info {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-card);
+}
+
+.emergency-tag {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--alert-level2-badge);
+}
+
+.footer-credits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  line-height: 1.5;
+}
+
+.attribution-links {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   ACESSIBILIDADE: REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+  .ambient-shape, .weather-ambient-halo {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (MOBILE & TABLET)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .app-container {
+    padding-inline: 1.1rem;
+    padding-block: 1.25rem 2.5rem;
+    gap: 1.35rem;
+  }
+
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .current-weather-card {
+    padding: 1.4rem;
+    gap: 1.1rem;
+  }
+
+  .hero-main-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .current-temp {
+    font-size: 4rem;
+  }
+
+  .weather-metrics-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .daily-item {
+    grid-template-columns: 85px 32px 1fr 65px;
+  }
+
+  .daily-desc {
+    display: none;
+  }
+}
