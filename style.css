@@ -671,53 +671,165 @@ button {
 
 /* --- Variantes Temáticas Dinâmicas do Card --- */
 
-/* 1. Tema Tempestade (Thunderstorm) */
+/* ================================================================
+   TEMAS ESCUROS — Tempestade, Chuva, Nublado
+   Fundo escuro + texto claro para imersão atmosférica total
+   ================================================================ */
+
+/* 1. Tema Tempestade (Thunderstorm) — Carvão-índigo elétrico */
 .current-weather-card.weather-theme-storm {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(245, 243, 255, 0.80) 50%, rgba(254, 243, 199, 0.55) 100%);
-  border-color: rgba(245, 158, 11, 0.35);
-  box-shadow: 0 10px 32px rgba(245, 158, 11, 0.06), var(--shadow-diffuse);
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 45%, #1a1f3a 100%);
+  border-color: rgba(245, 158, 11, 0.40);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(245, 158, 11, 0.18);
 }
 .current-weather-card.weather-theme-storm .weather-ambient-halo {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.28) 0%, rgba(199, 210, 254, 0.12) 55%, transparent 75%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.32) 0%, rgba(99, 102, 241, 0.18) 50%, transparent 75%);
 }
+/* Textos claros no tema escuro de tempestade */
+.weather-theme-storm .current-temp,
+.weather-theme-storm .condition-title { color: #FFFFFF; }
+.weather-theme-storm .min-max-badge { color: rgba(255, 255, 255, 0.70); }
+.weather-theme-storm .metric-value { color: #F1F5F9; }
+.weather-theme-storm .metric-label { color: rgba(255, 255, 255, 0.55); }
+.weather-theme-storm .metric-item {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+.weather-theme-storm .metric-item:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.10), 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.weather-theme-storm .weather-status-chip {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #F9FAFB;
+}
+.weather-theme-storm .rain-summary-text { color: #93C5FD; }
 
-/* 2. Tema Chuva / Pancadas (Rain) */
+/* 2. Tema Chuva / Pancadas (Rain) — Azul oceano profundo */
 .current-weather-card.weather-theme-rain {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(240, 249, 255, 0.85) 50%, rgba(224, 242, 254, 0.60) 100%);
-  border-color: rgba(56, 189, 248, 0.40);
-  box-shadow: 0 10px 32px rgba(2, 132, 199, 0.05), var(--shadow-diffuse);
+  background: linear-gradient(145deg, #0c1a2e 0%, #1e2d3d 50%, #1a2f45 100%);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.30), 0 0 0 1px rgba(56, 189, 248, 0.14);
 }
 .current-weather-card.weather-theme-rain .weather-ambient-halo {
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.26) 0%, rgba(224, 242, 254, 0.15) 60%, transparent 75%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.30) 0%, rgba(14, 165, 233, 0.12) 55%, transparent 75%);
 }
+.weather-theme-rain .current-temp,
+.weather-theme-rain .condition-title { color: #F0F9FF; }
+.weather-theme-rain .min-max-badge { color: rgba(240, 249, 255, 0.68); }
+.weather-theme-rain .metric-value { color: #E0F2FE; }
+.weather-theme-rain .metric-label { color: rgba(224, 242, 254, 0.58); }
+.weather-theme-rain .metric-item {
+  background: rgba(56, 189, 248, 0.10);
+  border-color: rgba(56, 189, 248, 0.20);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+.weather-theme-rain .metric-item:hover {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.32);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+.weather-theme-rain .weather-status-chip {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #E0F2FE;
+}
+.weather-theme-rain .rain-summary-text { color: #7DD3FC; }
 
-/* 3. Tema Nublado / Encoberto (Cloudy) */
+/* 3. Tema Nublado / Encoberto (Cloudy) — Cinza ardósia escuro */
 .current-weather-card.weather-theme-cloudy {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(241, 245, 249, 0.85) 60%, rgba(226, 232, 240, 0.55) 100%);
-  border-color: rgba(226, 232, 240, 0.95);
+  background: linear-gradient(145deg, #1f2937 0%, #111827 50%, #1c2432 100%);
+  border-color: rgba(148, 163, 184, 0.28);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(148, 163, 184, 0.12);
 }
 .current-weather-card.weather-theme-cloudy .weather-ambient-halo {
-  background: radial-gradient(circle, rgba(148, 163, 184, 0.20) 0%, rgba(241, 245, 249, 0.1) 60%, transparent 75%);
+  background: radial-gradient(circle, rgba(148, 163, 184, 0.22) 0%, rgba(100, 116, 139, 0.10) 60%, transparent 75%);
 }
+.weather-theme-cloudy .current-temp,
+.weather-theme-cloudy .condition-title { color: #F1F5F9; }
+.weather-theme-cloudy .min-max-badge { color: rgba(241, 245, 249, 0.65); }
+.weather-theme-cloudy .metric-value { color: #E2E8F0; }
+.weather-theme-cloudy .metric-label { color: rgba(226, 232, 240, 0.55); }
+.weather-theme-cloudy .metric-item {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+}
+.weather-theme-cloudy .metric-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.20);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 6px 18px rgba(0, 0, 0, 0.20);
+}
+.weather-theme-cloudy .weather-status-chip {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #CBD5E1;
+}
+.weather-theme-cloudy .rain-summary-text { color: #93C5FD; }
 
-/* 4. Tema Ensolarado / Céu Limpo (Sunny) */
+/* ================================================================
+   TEMAS CLAROS — Sol e Noite
+   ================================================================ */
+
+/* 4. Tema Ensolarado / Céu Limpo (Sunny) — Céu azul & dourado */
 .current-weather-card.weather-theme-sunny {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(254, 252, 232, 0.85) 50%, rgba(254, 243, 199, 0.55) 100%);
-  border-color: rgba(253, 224, 71, 0.45);
-  box-shadow: 0 10px 32px rgba(245, 158, 11, 0.05), var(--shadow-diffuse);
+  background: linear-gradient(145deg, #EFF6FF 0%, #FEF9EE 55%, #FEF3C7 100%);
+  border-color: rgba(253, 224, 71, 0.55);
+  box-shadow: 0 12px 36px rgba(245, 158, 11, 0.09), var(--shadow-diffuse);
 }
 .current-weather-card.weather-theme-sunny .weather-ambient-halo {
-  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(254, 243, 199, 0.15) 60%, transparent 75%);
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.32) 0%, rgba(254, 243, 199, 0.18) 60%, transparent 75%);
 }
+/* Texto escuro no tema claro */
+.weather-theme-sunny .current-temp,
+.weather-theme-sunny .condition-title { color: #111827; }
+.weather-theme-sunny .min-max-badge { color: #4B5563; }
+.weather-theme-sunny .metric-value { color: #111827; }
+.weather-theme-sunny .metric-label { color: #6B7280; }
+.weather-theme-sunny .metric-item {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+.weather-theme-sunny .weather-status-chip {
+  background: rgba(255, 255, 255, 0.80);
+  border-color: rgba(255, 255, 255, 0.98);
+  color: #111827;
+}
+.weather-theme-sunny .rain-summary-text { color: #0369A1; }
 
-/* 5. Tema Noturno Serena (Night) */
+/* 5. Tema Noturno Sereno (Night) — Índigo-marinho profundo */
 .current-weather-card.weather-theme-night {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.90) 0%, rgba(241, 245, 249, 0.80) 55%, rgba(224, 231, 255, 0.55) 100%);
-  border-color: rgba(199, 210, 254, 0.45);
+  background: linear-gradient(145deg, #0f172a 0%, #1e1b4b 55%, #1a1f3a 100%);
+  border-color: rgba(165, 180, 252, 0.28);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(165, 180, 252, 0.12);
 }
 .current-weather-card.weather-theme-night .weather-ambient-halo {
-  background: radial-gradient(circle, rgba(165, 180, 252, 0.25) 0%, rgba(224, 231, 255, 0.1) 60%, transparent 75%);
+  background: radial-gradient(circle, rgba(165, 180, 252, 0.28) 0%, rgba(99, 102, 241, 0.12) 60%, transparent 75%);
 }
+.weather-theme-night .current-temp,
+.weather-theme-night .condition-title { color: #EEF2FF; }
+.weather-theme-night .min-max-badge { color: rgba(238, 242, 255, 0.65); }
+.weather-theme-night .metric-value { color: #C7D2FE; }
+.weather-theme-night .metric-label { color: rgba(199, 210, 254, 0.58); }
+.weather-theme-night .metric-item {
+  background: rgba(165, 180, 252, 0.09);
+  border-color: rgba(165, 180, 252, 0.18);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+.weather-theme-night .metric-item:hover {
+  background: rgba(165, 180, 252, 0.15);
+  border-color: rgba(165, 180, 252, 0.28);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.weather-theme-night .weather-status-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #C7D2FE;
+}
+.weather-theme-night .rain-summary-text { color: #93C5FD; }
 
 /* --- Linha de Status Superior do Card --- */
 .card-context-row {
